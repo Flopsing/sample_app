@@ -1,2 +1,28 @@
 module SessionsHelper
+
+	def sign_in(user)
+		cookies.permanent[:remember_token] = user.remember_token
+		#cookies[:blablabla] = { value:   user.remember_token,
+        #                     expires: 1.years.from_now.utc }
+		self.current_user = user
+	end
+
+	def current_user=(user)
+    	@current_user = user
+  	end
+
+  	def signed_in?
+    	!current_user.nil?
+  	end
+
+  	def current_user
+    	@current_user ||= User.find_by_remember_token(cookies[:remember_token])
+    	#@current_user ||= find
+  	end
+
+  	def find
+  		puts "###########################################################"
+  		cur = User.find_by_remember_token(cookies[:remember_token])
+  	end
+
 end
