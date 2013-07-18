@@ -17,6 +17,14 @@ def create
 end
 
 def destroy
+	sign_out
+	redirect_to root_url
 end
+
+def delete
+	sign_out
+	redirect_to root_url
+end
+
 
 end
