@@ -12,8 +12,19 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    User.find(params[:id]).destroy
-    redirect_to users_url
+    #User.find(params[:id]).destroy
+    user = User.find(params[:id])
+    if(current_user?(User.find(params[:id])))
+      
+      #flash[:error] = "You can not delete your self"
+      flash[:error] = 'Invalid email/password combination'
+      redirect_to root_path, error:"invalid"
+    else
+      user.destroy
+      flash[:error] = 'Invalid email/password combination'
+      redirect_to users_url, error:"invalid"
+    end
+    
   end
 
 	def show
@@ -79,7 +90,7 @@ class UsersController < ApplicationController
     end
 
     def admin_user
-      redirect_to(root_path) unless current_user.admin?
+      redirect_to root_path, error:"only admin is allowed to delete users" unless current_user.admin?
     end
 
 end
